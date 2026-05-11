@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- PRODUCTS HEADER -->
+
+<section class="products-header">
+
+    <h1>Our Products</h1>
+
+    <p>
+        Premium modern products for your lifestyle.
+    </p>
+
+</section>
+
+<!-- PRODUCTS SECTION -->
+
+<section class="products-page">
+
+    <div class="products-grid">
+
+        {% for product in products %}
+
+        <div class="product-box">
+
+            <!-- PRODUCT IMAGE -->
+
+            <a href="/product/{{ product.id }}">
+
+                <img
+                        src="{{ url_for('static', filename='images/' + product.image) }}"
+                        alt=""
+                >
+
+            </a>
+
+            <!-- PRODUCT INFO -->
+
+            <div class="product-info">
+
+                <h3>{{ product.name }}</h3>
+
+                <p>
+                    {{ product.description }}
+                </p>
+
+                <h4>${{ product.price }}</h4>
+
+                <!-- BUTTONS -->
+
+                <div class="product-buttons">
+
+                    <button
+                            class="add-cart-btn"
+                            onclick="addToCart({{ product.id }})"
+                    >
+                        Add To Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+    function addToCart(productId){
+
+        fetch(`/add_to_cart/${productId}`)
+            .then(response => response.json())
+            .then(data => {
+
+                let popup = document.getElementById("popup");
+
+                popup.style.display = "block";
+
+                popup.innerText = "✅ Product added to cart successfully!";
+
+                setTimeout(() => {
+
+                    popup.style.display = "none";
+
+                }, 2000);
+
+                let cartCount = document.getElementById("cart-count");
+
+                cartCount.innerText = data.cart_count;
+
+            })
+
+            .catch(error => {
+
+                console.log(error)
+
+            })
+
+    }
+
+</script>
+
+{% endblock %}

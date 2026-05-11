@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+    <div class="hero-text">
+
+        <h1>Upgrade Your Style</h1>
+
+        <p>
+            Discover modern fashion, electronics,
+            accessories and premium products.
+        </p>
+
+        <button class="shop-btn">
+            Shop Now
+            <span class="arrow">⟶</span>
+        </button>
+
+    </div>
+
+    <div class="hero-image">
+
+        <img src="{{ url_for('static', filename='images/shopping.png') }}" alt="">
+
+    </div>
+
+</section>
+
+<!-- FEATURED PRODUCTS -->
+
+<section class="featured-products">
+
+    <h2 class="section-title">
+        Featured Products
+    </h2>
+
+    <div class="product-container">
+
+        {% for product in products %}
+
+        <div class="product-card">
+
+            <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="">
+
+            <h3>{{ product.name }}</h3>
+
+            <p>${{ product.price }}</p>
+
+            <button onclick="addToCart({{ product.id }})">
+                Add to Cart
+            </button>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- CATEGORIES -->
+
+<section class="categories">
+
+    <h2 class="section-title">
+        Shop By Category
+    </h2>
+
+    <div class="category-container">
+
+        <div class="category-card">
+            Fashion
+        </div>
+
+        <div class="category-card">
+            Electronics
+        </div>
+
+        <div class="category-card">
+            Shoes
+        </div>
+
+        <div class="category-card">
+            Accessories
+        </div>
+
+    </div>
+
+</section>
+
+<!-- NEWSLETTER -->
+
+<section class="newsletter">
+
+    <h2>Subscribe For Latest Updates</h2>
+
+    <p>
+        Get latest offers and premium products updates.
+    </p>
+
+    <div class="newsletter-box">
+
+        <input type="email" placeholder="Enter your email">
+
+        <button>
+            Subscribe
+        </button>
+
+    </div>
+
+</section>
+
+{% endblock %}

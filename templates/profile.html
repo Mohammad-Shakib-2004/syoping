@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="profile-page">
+
+  <div class="profile-container">
+
+    <!-- FLASH MESSAGE -->
+
+    {% with messages = get_flashed_messages() %}
+
+    {% if messages %}
+
+    <div class="success-message">
+
+      <i class="bi bi-check-circle-fill"></i>
+
+      {{ messages[0] }}
+
+    </div>
+
+    {% endif %}
+
+    {% endwith %}
+
+    <!-- PROFILE FORM -->
+
+    <form method="POST"
+          enctype="multipart/form-data"
+          class="profile-form">
+
+      <!-- PROFILE HEADER -->
+
+      <div class="profile-header">
+
+        <div class="profile-image">
+
+          <label for="profile-upload">
+
+            {% if profile.profile_image %}
+
+            <img src="{{ url_for(
+                'static',
+                filename='uploads/' + profile.profile_image
+            ) }}">
+
+            {% else %}
+
+            <i class="bi bi-person-circle"></i>
+
+            {% endif %}
+
+            <div class="upload-overlay">
+
+              <i class="bi bi-camera-fill"></i>
+
+            </div>
+
+          </label>
+
+          <input type="file"
+                 id="profile-upload"
+                 name="profile_image"
+                 accept="image/*"
+                 hidden>
+
+        </div>
+
+        <div class="profile-header-text">
+
+          <h1>{{ user.fullname }}</h1>
+
+          <p>
+
+            <i class="bi bi-envelope"></i>
+
+            {{ user.email }}
+
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- FULL NAME -->
+
+      <div class="form-group">
+
+        <label>
+
+          <i class="bi bi-person"></i>
+
+          Full Name
+
+        </label>
+
+        <input type="text"
+               name="fullname"
+               value="{{ user.fullname }}"
+               placeholder="Enter your full name"
+               required>
+
+      </div>
+
+      <!-- EMAIL -->
+
+      <div class="form-group">
+
+        <label>
+
+          <i class="bi bi-envelope"></i>
+
+          Email Address
+
+        </label>
+
+        <input type="email"
+               name="email"
+               value="{{ user.email }}"
+               placeholder="Enter your email"
+               required>
+
+      </div>
+
+      <!-- PHONE -->
+
+      <div class="form-group">
+
+        <label>
+
+          <i class="bi bi-telephone"></i>
+
+          Phone Number
+
+        </label>
+
+        <input type="text"
+               name="phone"
+               value="{{ profile.phone or '' }}"
+               placeholder="Enter your phone number">
+
+      </div>
+
+      <!-- ADDRESS -->
+
+      <div class="form-group">
+
+        <label>
+
+          <i class="bi bi-geo-alt"></i>
+
+          Delivery Address
+
+        </label>
+
+        <textarea name="address_line"
+                  rows="4"
+                  placeholder="Enter your full address">{{ profile.address_line or '' }}</textarea>
+
+      </div>
+
+      <!-- CITY + POSTAL -->
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label>
+
+            <i class="bi bi-buildings"></i>
+
+            City
+
+          </label>
+
+          <input type="text"
+                 name="city"
+                 value="{{ profile.city or '' }}"
+                 placeholder="Enter city">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>
+
+            <i class="bi bi-mailbox"></i>
+
+            Postal Code
+
+          </label>
+
+          <input type="text"
+                 name="postal_code"
+                 value="{{ profile.postal_code or '' }}"
+                 placeholder="Postal code">
+
+        </div>
+
+      </div>
+
+      <!-- COUNTRY -->
+
+      <div class="form-group">
+
+        <label>
+
+          <i class="bi bi-globe"></i>
+
+          Country
+
+        </label>
+
+        <select name="country">
+
+          <option value="">Select Country</option>
+
+          <option value="Bangladesh"
+                  {% if profile.country == 'Bangladesh' %}selected{% endif %}>
+          Bangladesh
+          </option>
+
+          <option value="Japan"
+                  {% if profile.country == 'Japan' %}selected{% endif %}>
+          Japan
+          </option>
+
+          <option value="South Korea"
+                  {% if profile.country == 'South Korea' %}selected{% endif %}>
+          South Korea
+          </option>
+
+          <option value="USA"
+                  {% if profile.country == 'USA' %}selected{% endif %}>
+          USA
+          </option>
+
+          <option value="Canada"
+                  {% if profile.country == 'Canada' %}selected{% endif %}>
+          Canada
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- SAVE BUTTON -->
+
+      <button type="submit"
+              class="save-btn">
+
+        <i class="bi bi-check-circle"></i>
+
+        Save Changes
+
+      </button>
+
+    </form>
+
+    <!-- ACTION BUTTONS -->
+
+    <div class="profile-actions">
+
+      <a href="/logout"
+         class="logout-btn">
+
+        <i class="bi bi-box-arrow-right"></i>
+
+        Logout
+
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- SHOP HEADER -->
+
+<section class="shop-header">
+
+    <h1>Shop Products</h1>
+
+    <p>
+        Discover premium fashion and modern accessories.
+    </p>
+
+</section>
+
+<!-- SEARCH -->
+
+<section class="search-section">
+
+    <input type="text" placeholder="Search products...">
+
+    <button>
+        Search
+    </button>
+
+</section>
+
+<!-- PRODUCTS -->
+
+<section class="featured-products">
+
+    <div class="product-container">
+
+        <!-- PRODUCT -->
+
+        <div class="product-card">
+
+            <img src="{{ url_for('static', filename='images/shoe.jpg') }}" alt="">
+
+            <h3>Nike Shoes</h3>
+
+            <p>$120</p>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT -->
+
+        <div class="product-card">
+
+            <img src="{{ url_for('static', filename='images/watch.jpg') }}" alt="">
+
+            <h3>Smart Watch</h3>
+
+            <p>$90</p>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT -->
+
+        <div class="product-card">
+
+            <img src="{{ url_for('static', filename='images/headphone.jpg') }}" alt="">
+
+            <h3>Wireless Headphone</h3>
+
+            <p>$70</p>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT -->
+
+        <div class="product-card">
+
+            <img src="{{ url_for('static', filename='images/shoe.jpg') }}" alt="">
+
+            <h3>Sports Shoes</h3>
+
+            <p>$110</p>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT -->
+
+        <div class="product-card">
+
+            <img src="{{ url_for('static', filename='images/watch.jpg') }}" alt="">
+
+            <h3>Luxury Watch</h3>
+
+            <p>$150</p>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+        <!-- PRODUCT -->
+
+        <div class="product-card">
+
+            <img src="{{ url_for('static', filename='images/headphone.jpg') }}" alt="">
+
+            <h3>Gaming Headset</h3>
+
+            <p>$95</p>
+
+            <button>Add to Cart</button>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

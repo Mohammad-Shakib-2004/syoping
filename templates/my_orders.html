@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="orders-page">
+
+    <div class="orders-header">
+
+        <h1>
+            My Orders
+        </h1>
+
+        <p>
+            Track and manage your recent purchases.
+        </p>
+
+    </div>
+
+    {% if orders %}
+
+    <div class="orders-grid">
+
+        {% for order in orders %}
+
+        <div class="order-card">
+
+            <div class="order-top">
+
+                <div>
+
+                    <h2>
+                        Order #{{ order.id }}
+                    </h2>
+
+                    <span class="order-date">
+                        {{ order.created_at }}
+                    </span>
+
+                </div>
+
+                <span class="order-status">
+                    {{ order.status }}
+                </span>
+
+            </div>
+
+            <div class="order-body">
+
+                <div class="order-price-box">
+
+                    <p>Total Amount</p>
+
+                    <h3>
+                        ${{ order.total_price }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <div class="order-bottom">
+
+                <a href="/order/{{ order.id }}"
+                   class="view-order-btn">
+
+                    <i class="bi bi-eye-fill"></i>
+
+                    View Details
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-orders">
+
+        <i class="bi bi-bag-x"></i>
+
+        <h2>
+            No Orders Yet
+        </h2>
+
+        <p>
+            Start shopping to see your orders here.
+        </p>
+
+        <a href="/shop" class="shop-now-btn">
+            Shop Now
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

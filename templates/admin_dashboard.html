@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="admin-dashboard">
+
+    <div class="dashboard-header">
+
+        <h1>
+            Admin Dashboard
+        </h1>
+
+        <p>
+            Manage your products, orders and store system.
+        </p>
+
+    </div>
+
+    <div class="dashboard-grid">
+
+        <!-- ADD PRODUCT -->
+
+        <a href="/add_product" class="dashboard-card">
+
+            <div class="dashboard-icon">
+                <i class="bi bi-plus-circle-fill"></i>
+            </div>
+
+            <h3>
+                Add Product
+            </h3>
+
+            <p>
+                Upload new products to your store.
+            </p>
+
+        </a>
+
+        <!-- MANAGE PRODUCTS -->
+
+        <a href="/manage_products" class="dashboard-card">
+
+            <div class="dashboard-icon">
+                <i class="bi bi-box-seam-fill"></i>
+            </div>
+
+            <h3>
+                Manage Products
+            </h3>
+
+            <p>
+                Edit and remove existing products.
+            </p>
+
+        </a>
+
+        <!-- MANAGE ORDERS -->
+
+        <a href="/admin_orders" class="dashboard-card">
+
+            <div class="dashboard-icon">
+                <i class="bi bi-bag-check-fill"></i>
+            </div>
+
+            <h3>
+                Manage Orders
+            </h3>
+
+            <p>
+                View and update customer orders.
+            </p>
+
+        </a>
+
+        <!-- LOGOUT -->
+
+        <a href="/admin_logout" class="dashboard-card logout-card">
+
+            <div class="dashboard-icon">
+                <i class="bi bi-box-arrow-right"></i>
+            </div>
+
+            <h3>
+                Logout
+            </h3>
+
+            <p>
+                Securely logout from admin panel.
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

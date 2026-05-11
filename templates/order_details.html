@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h1 class="mb-5 fw-bold">
+        Order #{{ order.id }}
+    </h1>
+
+    <div class="row g-4">
+
+        {% for item in items %}
+
+        <div class="col-md-12">
+
+            <div class="card border-0 shadow-sm rounded-4 p-4 d-flex flex-row align-items-center gap-4">
+
+                <img src="{{ item.image }}"
+                     width="120">
+
+                <div>
+
+                    <h3>
+                        {{ item.name }}
+                    </h3>
+
+                    <p class="mb-1">
+                        Quantity:
+                        {{ item.quantity }}
+                    </p>
+
+                    <p class="mb-0">
+                        Price:
+                        ${{ item.price }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

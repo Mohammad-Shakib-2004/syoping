@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Product | Syoping 쇼핑</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Syoping 쇼핑
+    </div>
+
+    <ul class="nav-links">
+
+        <li><a href="/">Home</a></li>
+        <li><a href="/products">Products</a></li>
+
+    </ul>
+
+</nav>
+
+<!-- ADD PRODUCT -->
+
+<section class="register-page">
+
+    <div class="register-box">
+
+        <h1>Add Product</h1>
+
+        <p>
+            Upload new product to database.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <input type="text" name="name" placeholder="Product Name" required>
+
+            <input type="number" name="price" placeholder="Price" required>
+
+            <textarea name="description" placeholder="Description"></textarea>
+
+            <input type="file" name="image" required>
+
+            <button type="submit">
+                Add Product
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+</body>
+</html>

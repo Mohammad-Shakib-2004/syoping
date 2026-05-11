@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h1 class="mb-5 fw-bold">
+        Manage Orders
+    </h1>
+
+    <div class="table-responsive">
+
+        <table class="table align-middle">
+
+            <thead>
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Customer</th>
+
+                <th>Total</th>
+
+                <th>Status</th>
+
+                <th>Date</th>
+
+                <th>Action</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for order in orders %}
+
+            <tr>
+
+                <td>
+                    #{{ order.id }}
+                </td>
+
+                <td>
+                    {{ order.fullname }}
+                </td>
+
+                <td>
+                    ${{ order.total_price }}
+                </td>
+
+                <td>
+
+                    <form action="/update_order_status/{{ order.id }}"
+                          method="POST">
+
+                        <select name="status"
+                                onchange="this.form.submit()"
+                                class="form-select">
+
+                            <option value="Pending"
+                                    {% if order.status == 'Pending' %}
+                            selected
+                            {% endif %}>
+                            Pending
+                            </option>
+
+                            <option value="Processing"
+                                    {% if order.status == 'Processing' %}
+                            selected
+                            {% endif %}>
+                            Processing
+                            </option>
+
+                            <option value="Shipped"
+                                    {% if order.status == 'Shipped' %}
+                            selected
+                            {% endif %}>
+                            Shipped
+                            </option>
+
+                            <option value="Delivered"
+                                    {% if order.status == 'Delivered' %}
+                            selected
+                            {% endif %}>
+                            Delivered
+                            </option>
+
+                            <option value="Cancelled"
+                                    {% if order.status == 'Cancelled' %}
+                            selected
+                            {% endif %}>
+                            Cancelled
+                            </option>
+
+                        </select>
+
+                    </form>
+
+                </td>
+
+                <td>
+                    {{ order.created_at }}
+                </td>
+
+                <td>
+
+                    <a href="/order/{{ order.id }}"
+                       class="btn btn-dark btn-sm">
+
+                        View
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
