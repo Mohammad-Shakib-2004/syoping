@@ -25,12 +25,14 @@ app.secret_key = "syoping_secret"
 # DATABASE CONNECTION
 
 db = mysql.connector.connect(
-    host="localhost",
+    host="git add app.py
+git commit -m "updated app.py"
+git push origin main",
     user="root",
-    password="password",
-    database="test_db"
+    password="PWFqnpOstqCUpojkWWCKnaLXLWYlYiBL",
+    database="railway",
+    port=3306
 )
-
 cursor = db.cursor(dictionary=True)
 
 # HOME PAGE
