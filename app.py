@@ -141,11 +141,82 @@ def cart():
 
 # CHECKOUT PAGE + ORDER SYSTEM
 
+
+
+
+# CHECKOUT PAGE + ORDER SYSTEM
+
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
 
     if 'user_id' not in session:
         return redirect('/login')
+
+    cart = session.get('cart', {})
+
+    # IF CART EMPTY
+
+    if not cart:
+        return render_template(
+            'checkout.html',
+            cart_items=[],
+            subtotal=0,
+            shipping=0,
+            tax=0,
+            discount=0,
+            total=0
+        )
+
+    # LOAD CART PRODUCTS
+
+    cart_items = []
+
+    subtotal = 0
+
+    for product_id, quantity in cart.items():
+
+        cursor.execute(
+            "SELECT * FROM products WHERE id = %s",
+            (product_id,)
+        )
+
+        product = cursor.fetchone()
+
+        if product:
+
+            item_total = (
+                float(product['price']) * quantity
+            )
+
+            subtotal += item_total
+
+            cart_items.append({
+
+                'id': product['id'],
+
+                'name': product['name'],
+
+                'price': float(product['price']),
+
+                'quantity': quantity,
+
+                'image': product['image'],
+
+                'description': product['description'],
+
+                'total': item_total
+
+            })
+
+    # EXTRA COSTS
+
+    shipping = 10
+    tax = 5
+    discount = 0
+
+    total = subtotal + shipping + tax - discount
+
+    # PLACE ORDER
 
     if request.method == 'POST':
 
@@ -156,11 +227,27 @@ def checkout():
         postal_code = request.form['postal_code']
         country = request.form['country']
 
-        profile_image = request.files['profile_image']
+        # NEW FIELDS
+
+        email = request.form.get('email')
+        delivery = request.form.get('delivery')
+        notes = request.form.get('notes')
+        payment_method = request.form.get(
+            'payment_method'
+        )
+
+        # PROFILE IMAGE
+
+        profile_image = request.files.get(
+            'profile_image'
+        )
 
         image_filename = ""
 
-        if profile_image and profile_image.filename != '':
+        if (
+            profile_image and
+            profile_image.filename != ''
+        ):
 
             image_filename = secure_filename(
                 profile_image.filename
@@ -173,38 +260,22 @@ def checkout():
                 )
             )
 
-        cart = session.get('cart', {})
-
-        if not cart:
-            return redirect('/cart')
-
-        total_price = 0
-
-        for product_id, quantity in cart.items():
-
-            cursor.execute(
-                "SELECT * FROM products WHERE id = %s",
-                (product_id,)
-            )
-
-            product = cursor.fetchone()
-
-            total_price += (
-                float(product['price']) * quantity
-            )
-
         # CREATE ORDER
 
         cursor.execute(
             """
             INSERT INTO orders
-            (user_id, total_price, status)
+            (
+                user_id,
+                total_price,
+                status
+            )
 
             VALUES (%s, %s, %s)
             """,
             (
                 session['user_id'],
-                total_price,
+                total,
                 'Pending'
             )
         )
@@ -245,14 +316,7 @@ def checkout():
 
         # INSERT ORDER ITEMS
 
-        for product_id, quantity in cart.items():
-
-            cursor.execute(
-                "SELECT * FROM products WHERE id = %s",
-                (product_id,)
-            )
-
-            product = cursor.fetchone()
+        for item in cart_items:
 
             cursor.execute(
                 """
@@ -268,9 +332,9 @@ def checkout():
                 """,
                 (
                     order_id,
-                    product_id,
-                    quantity,
-                    product['price']
+                    item['id'],
+                    item['quantity'],
+                    item['price']
                 )
             )
 
@@ -282,7 +346,27 @@ def checkout():
 
         return redirect('/order_success')
 
-    return render_template('checkout.html')
+    return render_template(
+
+        'checkout.html',
+
+        cart_items=cart_items,
+
+        subtotal=subtotal,
+
+        shipping=shipping,
+
+        tax=tax,
+
+        discount=discount,
+
+        total=total
+
+    )
+
+
+
+
 
 
 # ORDER SUCCESS
