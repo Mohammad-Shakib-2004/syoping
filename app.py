@@ -25,13 +25,14 @@ app.secret_key = "syoping_secret"
 # DATABASE CONNECTION
 
 db = mysql.connector.connect(
-    host="viaduct.proxy.rlwy.net",
-    user="root",
-    password="PWFqnpOstqCUpojkWWCKnaLXLWYlYiBL",
-    database="railway",
-    port=54183
+    host="gateway01.us-east-1.prod.aws.tidbcloud.com",
+    port=4000,
+    user="nqdjDChayqizKrd.root",
+    password="VqpHxbMv82DIDwzS",
+    database="test",
+    ssl_verify_identity=False,
+    ssl_verify_cert=False
 )
-
 
 
 cursor = db.cursor(dictionary=True)
@@ -1101,10 +1102,12 @@ def search():
     query = request.args.get('query')
 
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="password",
-        database="test_db"
+        host="gateway01.us-east-1.prod.aws.tidbcloud.com",
+        port=4000,
+        user="nqdjDChayqizKrd.root",
+        password="7pugyJ2WfljoxtXG",
+        database="sys",
+        ssl_disabled=False
     )
 
     cursor = conn.cursor(dictionary=True)
