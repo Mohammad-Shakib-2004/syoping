@@ -2,13 +2,256 @@
 
 {% block content %}
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:
+        radial-gradient(circle at top left,#1e3a8a 0%,transparent 30%),
+        radial-gradient(circle at top right,#0891b2 0%,transparent 30%),
+        linear-gradient(135deg,#0f172a,#111827,#0f172a);
+    min-height:100vh;
+}
+
+/* Dashboard Container */
+
+.admin-dashboard{
+    max-width:1400px;
+    margin:auto;
+    padding:60px 30px;
+    position:relative;
+}
+
+/* Floating Glow Effects */
+
+.admin-dashboard::before{
+    content:"";
+    position:fixed;
+    top:100px;
+    left:100px;
+    width:250px;
+    height:250px;
+    background:#2563eb;
+    border-radius:50%;
+    filter:blur(140px);
+    opacity:.15;
+    pointer-events:none;
+}
+
+.admin-dashboard::after{
+    content:"";
+    position:fixed;
+    bottom:100px;
+    right:100px;
+    width:250px;
+    height:250px;
+    background:#06b6d4;
+    border-radius:50%;
+    filter:blur(140px);
+    opacity:.15;
+    pointer-events:none;
+}
+
+/* Header */
+
+.dashboard-header{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.dashboard-header h1{
+    font-size:3rem;
+    font-weight:800;
+    color:#fff;
+    margin-bottom:10px;
+    letter-spacing:1px;
+}
+
+.dashboard-header p{
+    color:#cbd5e1;
+    font-size:1rem;
+}
+
+/* Grid */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
+
+/* Cards */
+
+.dashboard-card{
+    text-decoration:none;
+    position:relative;
+    overflow:hidden;
+
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:28px;
+
+    padding:40px 30px;
+
+    transition:all .35s ease;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,.35);
+}
+
+.dashboard-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        135deg,
+        rgba(59,130,246,.15),
+        rgba(6,182,212,.15)
+    );
+
+    opacity:0;
+    transition:.35s;
+}
+
+.dashboard-card:hover::before{
+    opacity:1;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-12px);
+    border-color:rgba(255,255,255,.25);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.45),
+        0 0 25px rgba(59,130,246,.25);
+}
+
+/* Shine Animation */
+
+.dashboard-card::after{
+    content:"";
+    position:absolute;
+    top:-150%;
+    left:-50%;
+
+    width:50%;
+    height:300%;
+
+    background:linear-gradient(
+        to right,
+        transparent,
+        rgba(255,255,255,.18),
+        transparent
+    );
+
+    transform:rotate(25deg);
+    transition:.9s;
+}
+
+.dashboard-card:hover::after{
+    left:130%;
+}
+
+/* Icon */
+
+.dashboard-icon{
+    width:90px;
+    height:90px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:22px;
+
+    background:linear-gradient(
+        135deg,
+        #3b82f6,
+        #06b6d4
+    );
+
+    margin-bottom:25px;
+
+    box-shadow:
+        0 15px 35px rgba(59,130,246,.35);
+}
+
+.dashboard-icon i{
+    color:white;
+    font-size:38px;
+}
+
+/* Text */
+
+.dashboard-card h3{
+    color:white;
+    font-size:1.4rem;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.dashboard-card p{
+    color:#cbd5e1;
+    line-height:1.7;
+    font-size:.95rem;
+}
+
+/* Logout */
+
+.logout-card .dashboard-icon{
+    background:linear-gradient(
+        135deg,
+        #ef4444,
+        #dc2626
+    );
+
+    box-shadow:
+        0 15px 35px rgba(239,68,68,.35);
+}
+
+.logout-card:hover{
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.45),
+        0 0 25px rgba(239,68,68,.35);
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .admin-dashboard{
+        padding:40px 20px;
+    }
+
+    .dashboard-header h1{
+        font-size:2.2rem;
+    }
+
+    .dashboard-card{
+        padding:30px 25px;
+    }
+
+    .dashboard-icon{
+        width:80px;
+        height:80px;
+    }
+
+    .dashboard-icon i{
+        font-size:32px;
+    }
+}
+</style>
+
 <section class="admin-dashboard">
 
     <div class="dashboard-header">
 
-        <h1>
-            Admin Dashboard
-        </h1>
+        <h1>Admin Dashboard</h1>
 
         <p>
             Manage your products, orders and store system.
@@ -19,16 +262,13 @@
     <div class="dashboard-grid">
 
         <!-- ADD PRODUCT -->
-
         <a href="/add_product" class="dashboard-card">
 
             <div class="dashboard-icon">
                 <i class="bi bi-plus-circle-fill"></i>
             </div>
 
-            <h3>
-                Add Product
-            </h3>
+            <h3>Add Product</h3>
 
             <p>
                 Upload new products to your store.
@@ -37,16 +277,13 @@
         </a>
 
         <!-- MANAGE PRODUCTS -->
-
         <a href="/manage_products" class="dashboard-card">
 
             <div class="dashboard-icon">
                 <i class="bi bi-box-seam-fill"></i>
             </div>
 
-            <h3>
-                Manage Products
-            </h3>
+            <h3>Manage Products</h3>
 
             <p>
                 Edit and remove existing products.
@@ -55,16 +292,13 @@
         </a>
 
         <!-- MANAGE ORDERS -->
-
         <a href="/admin_orders" class="dashboard-card">
 
             <div class="dashboard-icon">
                 <i class="bi bi-bag-check-fill"></i>
             </div>
 
-            <h3>
-                Manage Orders
-            </h3>
+            <h3>Manage Orders</h3>
 
             <p>
                 View and update customer orders.
@@ -73,16 +307,13 @@
         </a>
 
         <!-- LOGOUT -->
-
         <a href="/admin_logout" class="dashboard-card logout-card">
 
             <div class="dashboard-icon">
                 <i class="bi bi-box-arrow-right"></i>
             </div>
 
-            <h3>
-                Logout
-            </h3>
+            <h3>Logout</h3>
 
             <p>
                 Securely logout from admin panel.
