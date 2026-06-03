@@ -840,6 +840,11 @@ def manage_products():
 
 # ADD PRODUCT
 
+
+from flask import render_template, request, redirect, session, flash
+from werkzeug.utils import secure_filename
+import os
+
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
 
@@ -848,26 +853,43 @@ def add_product():
 
     if request.method == 'POST':
 
-        name = request.form['name']
-        price = request.form['price']
-        description = request.form['description']
+        name = request.form.get('name')
+        price = request.form.get('price')
+        description = request.form.get('description')
 
-        image = request.files['image']
+        image = request.files.get('images')
 
-        image_filename = secure_filename(
-            image.filename
-        )
+        image_filename = ''
 
-        image.save(
-            'static/images/' + image_filename
-        )
+        if image and image.filename:
+
+            image_filename = secure_filename(
+                image.filename
+            )
+
+            image.save(
+                os.path.join(
+                    'static/images',
+                    image_filename
+                )
+            )
 
         cursor.execute(
             """
             INSERT INTO products
-            (name, price, image, description)
-
-            VALUES (%s, %s, %s, %s)
+            (
+                name,
+                price,
+                image,
+                description
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s,
+                %s
+            )
             """,
             (
                 name,
@@ -879,11 +901,23 @@ def add_product():
 
         db.commit()
 
-        flash("Product added successfully!")
+        flash(
+            "Product added successfully!",
+            "success"
+        )
 
         return redirect('/manage_products')
 
-    return render_template('add_product.html')
+    return render_template(
+        'add_product.html'
+    )
+
+
+
+
+
+
+
 
 
 # EDIT PRODUCT
