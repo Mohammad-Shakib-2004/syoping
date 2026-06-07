@@ -1,5 +1,5 @@
 import os
-
+import json
 from werkzeug.utils import secure_filename
 
 
@@ -71,14 +71,40 @@ def categories():
 @app.route('/products')
 def products():
 
-    cursor.execute("SELECT * FROM products")
+    db.reconnect(attempts=3, delay=2)
+
+    cursor = db.cursor(dictionary=True)
+
+    category = request.args.get('category')
+
+    if category:
+
+        cursor.execute("""
+            SELECT p.*
+            FROM products p
+            JOIN categories c
+            ON p.category_id = c.id
+            WHERE c.name = %s
+        """, (category,))
+
+    else:
+
+        cursor.execute(
+            "SELECT * FROM products"
+        )
 
     products = cursor.fetchall()
 
     return render_template(
         'products.html',
-        products=products
+        products=products,
+        active_category=category
     )
+
+
+
+
+
 
 
 # PRODUCT DETAILS PAGE
@@ -824,26 +850,31 @@ def update_order_status(order_id):
 
 @app.route('/manage_products')
 def manage_products():
+    category_name = request.args.get('category')
 
-    if 'admin' not in session:
-        return redirect('/admin_login')
+    if category_name:
+        cursor.execute("SELECT id, name FROM categories WHERE name=%s", (category_name,))
+        category_row = cursor.fetchone()
+        if category_row:
+            category_id = category_row['id']  # যদি dict cursor ব্যবহার করো
+            cursor.execute("SELECT * FROM products WHERE category_id=%s", (category_id,))
+            products = cursor.fetchall()
+        else:
+            products = []  # category না থাকলে খালি list
+    else:
+        cursor.execute("SELECT * FROM products")
+        products = cursor.fetchall()
 
-    cursor.execute("SELECT * FROM products")
+    cursor.execute("SELECT * FROM categories")
+    categories = cursor.fetchall()
 
-    products = cursor.fetchall()
+    return render_template('manage_products.html', products=products, categories=categories)
 
-    return render_template(
-        'manage_products.html',
-        products=products
-    )
+
 
 
 # ADD PRODUCT
 
-
-from flask import render_template, request, redirect, session, flash
-from werkzeug.utils import secure_filename
-import os
 
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
@@ -856,6 +887,7 @@ def add_product():
         name = request.form.get('name')
         price = request.form.get('price')
         description = request.form.get('description')
+        category_id = request.form.get('category_id')
 
         image = request.files.get('images')
 
@@ -881,10 +913,12 @@ def add_product():
                 name,
                 price,
                 image,
-                description
+                description,
+                category_id
             )
             VALUES
             (
+                %s,
                 %s,
                 %s,
                 %s,
@@ -895,7 +929,8 @@ def add_product():
                 name,
                 price,
                 image_filename,
-                description
+                description,
+                category_id
             )
         )
 
@@ -908,11 +943,16 @@ def add_product():
 
         return redirect('/manage_products')
 
-    return render_template(
-        'add_product.html'
+    cursor.execute(
+        "SELECT * FROM categories"
     )
 
+    categories = cursor.fetchall()
 
+    return render_template(
+        'add_product.html',
+        categories=categories
+    )
 
 
 
@@ -1206,6 +1246,37 @@ def live_search():
     return jsonify(products)
 
 
+
+
+@app.route('/import_products')
+def import_products():
+
+    cursor = db.cursor()
+
+    with open('products.json', 'r', encoding='utf-8') as f:
+        products = json.load(f)
+
+    for product in products:
+
+        cursor.execute(
+            """
+            INSERT INTO products
+            (name, price, image, description)
+            VALUES (%s, %s, %s, %s)
+            """,
+            (
+                product['name'],
+                product['price'],
+                product['image'],
+                product['description']
+            )
+        )
+
+    db.commit()
+
+    cursor.close()
+
+    return "10000 Products Imported!"
 
 
 

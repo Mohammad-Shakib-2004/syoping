@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,46 +151,6 @@ textarea{
     border-radius:8px;
 }
 
-.category-wrapper{
-    position:relative;
-}
-
-.category-dropdown{
-    display:none;
-    position:absolute;
-    width:100%;
-    background:white;
-    border:1px solid #ddd;
-    border-radius:8px;
-    max-height:220px;
-    overflow:auto;
-    z-index:100;
-}
-
-.category-item{
-    padding:12px;
-    cursor:pointer;
-}
-
-.category-item:hover{
-    background:#eff6ff;
-}
-
-.selected-categories{
-    margin-top:10px;
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.category-tag{
-    background:#dbeafe;
-    color:#1e40af;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:14px;
-}
-
 .switch{
     display:flex;
     gap:10px;
@@ -301,41 +260,15 @@ hidden>
 
 <div class="card">
 
-<h3>Categories</h3>
+<h3>Category</h3>
 
-<input
-type="hidden"
-name="categories"
-id="categoriesInput">
-
-<div class="category-wrapper">
-
-<input
-type="text"
-id="categorySearch"
-placeholder="Search category">
-
-<div
-class="category-dropdown"
-id="categoryDropdown">
-
-<div class="category-item">Electronics</div>
-<div class="category-item">Fashion</div>
-<div class="category-item">Gaming</div>
-<div class="category-item">Books</div>
-<div class="category-item">Sports</div>
-<div class="category-item">Beauty</div>
-<div class="category-item">Home & Living</div>
-<div class="category-item">Men Clothing</div>
-<div class="category-item">Women Clothing</div>
-
-</div>
-
-</div>
-
-<div
-class="selected-categories"
-id="selectedCategories">
+<div class="form-group">
+<label>Select Category</label>
+<select name="category_id" required>
+    {% for category in categories %}
+    <option value="{{ category.id }}">{{ category.name }}</option>
+    {% endfor %}
+</select>
 </div>
 
 </div>
@@ -400,86 +333,6 @@ id="selectedCategories">
 </div>
 
 <script>
-
-const searchInput =
-document.getElementById("categorySearch");
-
-const dropdown =
-document.getElementById("categoryDropdown");
-
-const selectedContainer =
-document.getElementById("selectedCategories");
-
-const hiddenInput =
-document.getElementById("categoriesInput");
-
-let selected = [];
-
-searchInput.addEventListener("focus",()=>{
-
-dropdown.style.display="block";
-
-});
-
-searchInput.addEventListener("keyup",()=>{
-
-let filter =
-searchInput.value.toLowerCase();
-
-document
-.querySelectorAll(".category-item")
-.forEach(item=>{
-
-item.style.display =
-item.innerText
-.toLowerCase()
-.includes(filter)
-? "block"
-: "none";
-
-});
-
-});
-
-document
-.querySelectorAll(".category-item")
-.forEach(item=>{
-
-item.addEventListener("click",()=>{
-
-let value = item.innerText;
-
-if(selected.includes(value))
-return;
-
-selected.push(value);
-
-hiddenInput.value =
-JSON.stringify(selected);
-
-let tag =
-document.createElement("div");
-
-tag.className="category-tag";
-tag.innerText=value;
-
-selectedContainer.appendChild(tag);
-
-searchInput.value="";
-
-});
-
-});
-
-document.addEventListener("click",(e)=>{
-
-if(!e.target.closest(".category-wrapper")){
-
-dropdown.style.display="none";
-
-}
-
-});
 
 const images =
 document.getElementById("images");
