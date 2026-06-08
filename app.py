@@ -1175,16 +1175,17 @@ def search():
 
     query = request.args.get('query')
 
-    conn = mysql.connector.connect(
+    db = mysql.connector.connect(
         host="gateway01.us-east-1.prod.aws.tidbcloud.com",
         port=4000,
         user="nqdjDChayqizKrd.root",
-        password="7pugyJ2WfljoxtXG",
-        database="sys",
-        ssl_disabled=False
+        password="VqpHxbMv82DIDwzS",
+        database="test",
+        ssl_verify_identity=False,
+        ssl_verify_cert=False
     )
 
-    cursor = conn.cursor(dictionary=True)
+    cursor = db.cursor(dictionary=True)
 
     sql = """
         SELECT *
@@ -1199,7 +1200,8 @@ def search():
     products = cursor.fetchall()
 
     cursor.close()
-    conn.close()
+    db.close()
+
 
     return render_template(
         "search_results.html",
@@ -1218,14 +1220,17 @@ def live_search():
 
     query = request.args.get('query')
 
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="password",
-        database="test_db"
+    db = mysql.connector.connect(
+        host="gateway01.us-east-1.prod.aws.tidbcloud.com",
+        port=4000,
+        user="nqdjDChayqizKrd.root",
+        password="VqpHxbMv82DIDwzS",
+        database="test",
+        ssl_verify_identity=False,
+        ssl_verify_cert=False
     )
 
-    cursor = conn.cursor(dictionary=True)
+    cursor = db.cursor(dictionary=True)
 
     sql = """
         SELECT *
@@ -1241,7 +1246,7 @@ def live_search():
     products = cursor.fetchall()
 
     cursor.close()
-    conn.close()
+    db.close()
 
     return jsonify(products)
 
